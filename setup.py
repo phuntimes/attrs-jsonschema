@@ -30,7 +30,7 @@ extra_requirements = {}
 
 
 classifiers = [
-    "Development Status :: 1 - Planning"
+    "Development Status :: 2 - Pre-Alpha"
     "Intended Audience :: Developers"
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.6",

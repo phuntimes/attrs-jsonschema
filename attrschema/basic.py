@@ -7,7 +7,7 @@ from attr import Attribute
 from typing import Any, Mapping
 from jsonschema import validate, ValidationError, SchemaError
 
-from .generics import Validator, Schema
+from .pep484 import Validator, Schema
 
 
 is_mapping = attr.validators.instance_of(Mapping)

@@ -7,7 +7,7 @@ from attr import Attribute
 from typing import Any
 from jsonschema import SchemaError
 
-from .generics import Validator, Drafts, DraftTypes
+from .pep484 import Validator, Drafts, DraftTypes
 from .version import schema_version
 
 
@@ -54,4 +54,3 @@ class SchemaValidator(Validator):
         except SchemaError as e:
             m = "'{:s}' failed linting against schema draft v{:d}"
             raise SchemaError(m.format(a.name, self.version)) from e
-

@@ -3,7 +3,7 @@
 
 import re
 
-from .generics import Schema
+from .pep484 import Schema
 
 
 VERSION = re.compile(r'^http://json-schema.org/draft-(\d+)/schema#$')

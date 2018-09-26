@@ -11,7 +11,7 @@ from jsonschema import ValidationError
 from .basic import JSONValidator
 from .schema import SchemaValidator
 
-from .generics import Schema, Drafts, Draft3, Draft4
+from .pep484 import Schema, Drafts, Draft3, Draft4
 
 
 @attr.s(frozen=True, slots=True)
@@ -52,7 +52,7 @@ is_draft4 = SchemaValidator(Draft4)
 
 
 @attr.s(frozen=True, slots=True)
-class Draft4Validator(JSONValidator):
+class Draft4Validator(DraftXValidator):
 
     schema: Schema = attr.ib(validator=is_draft4)
     validator: Draft4 = attr.ib(init=False, repr=False)
