@@ -41,10 +41,10 @@ classifiers = [
 
 
 setup(
-    name='attrs-jsonschema',
+    name='attrschema',
     version='0.1.1',
     packages=project_packages,
-    url='https://github.com/phuntimes/attrs-jsonschema',
+    url='https://github.com/phuntimes/attrschema',
     license='MIT License',
     author='Sean McVeigh',
     author_email='spmcveigh@gmail.com',
