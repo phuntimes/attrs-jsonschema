@@ -1,0 +1,243 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "a GeoJSON object",
+  "link": "https://tools.ietf.org/html/rfc7946#section-3",
+  "definitions": {
+    "Longitude": {
+      "title": "a GeoJSON Longitude",
+      "description": "first coordinate of a Position",
+      "link": "https://tools.ietf.org/html/rfc7946#section-3.1.1",
+      "type": "number",
+      "maximum": 180,
+      "minimum": -180,
+      "exclusiveMinimum": true
+    },
+    "Latitude": {
+      "title": "a GeoJSON Latitude",
+      "description": "second coordinate of a Position",
+      "link": "https://tools.ietf.org/html/rfc7946#section-3.1.1",
+      "type": "number",
+      "maximum": 90,
+      "minimum": -90,
+      "exclusiveMinimum": true
+    },
+    "Altitude": {
+      "title": "a GeoJSON Altitude",
+      "description": "third (optional) coordinate of a Position",
+      "link": "https://tools.ietf.org/html/rfc7946#section-3.1.1",
+      "type": "number"
+    },
+    "Position": {
+      "title": "a GeoJSON Position",
+      "description": "a Position is an array of coordinates",
+      "link": "https://tools.ietf.org/html/rfc7946#section-3.1.1",
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 3,
+      "additionalItems": false,
+      "items": [
+        { "$ref": "#/definitions/Longitude" },
+        { "$ref": "#/definitions/Latitude" },
+        { "$ref": "#/definitions/Altitude" }
+      ]
+    },
+    "bbox": {
+      "title": "a GeoJSON bounding box",
+      "description": "an optional geo-spatial bounding box in 2 or 3 dimensions",
+      "link":"https://tools.ietf.org/html/rfc7946#section-5",
+      "oneOf": [
+        {
+          "type": "array",
+          "minItems": 4,
+          "additionalItems": false,
+          "items": [
+            { "$ref": "#/definitions/Longitude", "description": "western border" },
+            { "$ref": "#/definitions/Latitude", "description": "southern border" },
+            { "$ref": "#/definitions/Longitude", "description": "eastern border" },
+            { "$ref": "#/definitions/Latitude",  "description": "northern border" }
+          ]
+        },
+        {
+          "type": "array",
+          "minItems": 6,
+          "additionalItems": false,
+          "items": [
+            { "$ref": "#/definitions/Longitude", "description": "western border" },
+            { "$ref": "#/definitions/Latitude", "description": "southern border" },
+            { "$ref": "#/definitions/Altitude", "description": "minimal height" },
+            { "$ref": "#/definitions/Longitude", "description": "eastern border" },
+            { "$ref": "#/definitions/Latitude",  "description": "northern border" },
+            { "$ref": "#/definitions/Altitude", "description": "maximal height" }
+          ]
+        }
+      ]
+    },
+    "Point": {
+      "title": "a GeoJSON Point geometry object",
+      "description": "a Point is a single Position",
+      "link": "https://tools.ietf.org/html/rfc7946#section-3.1.2",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": { "enum": ["Point"] },
+        "coordinates": { "$ref": "#/definitions/Position" }
+      }
+    },
+    "MultiPoint": {
+      "title": "a GeoJSON MultiPoint geometry object",
+      "description": "a MultiPoint is an array of Positions",
+      "link": "https://tools.ietf.org/html/rfc7946#section-3.1.3",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": { "enum": ["MultiPoint"] },
+        "coordinates": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/Position" },
+          "minItems": 1
+        }
+      }
+    },
+    "LineString": {
+      "title": "a GeoJSON LineString geometry object",
+      "description": "a LineString is an array of two or more Positions",
+      "link": "https://tools.ietf.org/html/rfc7946#section-3.1.4",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": { "enum": ["LineString"] },
+        "coordinates": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/Position" },
+          "minItems": 2
+        }
+      }
+    },
+    "MultiLineString": {
+      "title": "a GeoJSON MultiLineString geometry object",
+      "description": "a MultiLineString is an array of LineString coordinate arrays",
+      "link": "https://tools.ietf.org/html/rfc7946#section-3.1.5",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": { "enum": ["MultiLineString"] },
+        "coordinates": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/LineString/properties/coordinates" },
+          "minItems": 1
+        }
+      }
+    },
+    "LinearRing": {
+      "title": "a GeoJSON LinearRing geometry object",
+      "description": "a LinearRing is a closed LineString with four or more Positions",
+      "link": "https://tools.ietf.org/html/rfc7946#section-3.1.6",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": { "enum": ["LinearRing"] },
+        "coordinates": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/Position" },
+          "maxItems": 4
+        }
+      }
+    },
+    "Polygon": {
+      "title": "a GeoJSON Polygon geometry object",
+      "description": "a Polygon is an exterior LinearRing with zero or more interior non-intersecting LinearRings",
+      "link": "https://tools.ietf.org/html/rfc7946#section-3.1.6",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": { "enum": ["Polygon"] },
+        "coordinates": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/LinearRing/properties/coordinates" },
+          "minItems": 1
+        }
+      }
+    },
+    "MultiPolygon": {
+      "title": "a GeoJSON MultiPolygon geometry object",
+      "description": "a MultiPolygon is an is an array of Polygon coordinate arrays",
+      "link": "https://tools.ietf.org/html/rfc7946#section-3.1.7",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": { "enum": [ "MultiPolygon" ] },
+        "coordinates": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/Polygon/properties/coordinates" },
+          "minItems": 1
+        }
+      }
+    },
+    "Geometry": {
+      "title": "any GeoJSON geometry object",
+      "description": "one of Point, MultiPoint, LineString, MultiLineString, Polygon, or MultiPolygon",
+      "link": "https://tools.ietf.org/html/rfc7946#section-3.1.8",
+      "oneOf": [
+        { "$ref": "#/definitions/Point" },
+        { "$ref": "#/definitions/MultiPoint" },
+        { "$ref": "#/definitions/LineString" },
+        { "$ref": "#/definitions/MultiLineString" },
+        { "$ref": "#/definitions/Polygon" },
+        { "$ref": "#/definitions/MultiPolygon" }
+      ]
+    },
+    "GeometryCollection": {
+      "title": "a GeoJSON GeometryCollection geometry object",
+      "description": "a GeometryCollection is an array (possibly empty) of any GeoJSON geometry",
+      "link": "https://tools.ietf.org/html/rfc7946#section-3.1.8",
+      "type": "object",
+      "additionalProperties": { "$ref": "#/definitions/bbox" },
+      "properties": {
+        "type": { "enum": [ "GeometryCollection" ] },
+        "geometries": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/Geometry" },
+          "minItems": 0
+        }
+      }
+    },
+    "Feature": {
+      "title": "a GeoJSON Feature object",
+      "description": "a Feature wraps a (possibly null) Geometry with (possibly null) metadata",
+      "link": "https://tools.ietf.org/html/rfc7946#section-3.2",
+      "type": "object",
+      "additionalProperties": { "$ref": "#/definitions/bbox" },
+      "properties": {
+        "type": { "enum": [ "Feature" ] },
+        "properties": {},
+        "geometry": {
+          "oneOf": [
+            { "type": "null" },
+            { "$ref": "#/definitions/Geometry" }
+          ]
+        }
+      }
+    },
+    "FeatureCollection": {
+      "title": "a GeoJSON FeatureCollection object",
+      "description": "a FeatureCollection is an array of zero or more Features",
+      "link": "https://tools.ietf.org/html/rfc7946#section-3.3",
+      "type": "object",
+      "additionalProperties": { "$ref": "#/definitions/bbox" },
+      "properties": {
+        "type": { "enum": [ "FeatureCollection" ] },
+        "features": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/Feature" } ,
+          "minItems": 0
+        }
+      }
+    }
+  },
+  "oneOf": [
+    { "$ref": "#/definitions/Geometry" },
+    { "$ref": "#/definitions/GeometryCollection" },
+    { "$ref": "#/definitions/Feature" },
+    { "$ref": "#/definitions/FeatureCollection" }
+  ]
+}
