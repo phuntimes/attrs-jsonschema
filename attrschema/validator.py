@@ -95,7 +95,7 @@ class DraftValidator(Validator):
     """
 
     validator: Draft = attr.ib(validator=is_draft, repr=False)
-    schema: Schema = attr.ib(init=False)
+    schema: Schema = attr.ib(init=False)  # NOTE for repr(...)
 
     def __attrs_post_init__(self):
         schema = self.validator.schema

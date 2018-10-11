@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 import attr
-import typing
 
 from attr import Attribute
 from typing import Any, Mapping, Callable, NoReturn
