@@ -1,5 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from .fixture import schema as geojson_schema
-from .fixture import samples as geojson_samples
+import typing
+
+from .documents import document
+from .schema import schema
+
+Document = typing.MutableMapping[str, typing.Any]

@@ -2,15 +2,18 @@
 # -*- coding: utf-8 -*-
 
 import attr
+import typing
 
 from attr import Attribute
-from typing import Any, Mapping
+from typing import Any, Mapping, Callable, NoReturn
 from jsonschema import validate, ValidationError, SchemaError
 
-from .pep484 import Validator, Schema
+
+Schema = Mapping[str, Any]
+Validator = Callable[[Any, Attribute, Any], NoReturn]
 
 
-is_mapping = attr.validators.instance_of(Mapping)
+is_dict = attr.validators.instance_of(dict)
 
 
 @attr.s(frozen=True, slots=True)
@@ -28,7 +31,7 @@ class JSONValidator(Validator):
      - or, if not present, most recent draft
     """
 
-    schema: Schema = attr.ib(validator=is_mapping)
+    schema: Schema = attr.ib(validator=is_dict)
 
     def __call__(self, i: Any, a: Attribute, v: Any):
         """
@@ -46,9 +49,9 @@ class JSONValidator(Validator):
 
         except SchemaError as e:
             m = m.format(a.name, 'metaschema')
-            raise SchemaError(m) from e
+            raise ValueError(m, a, v) from e
 
         except ValidationError as e:
             m = m.format(a.name, 'schema')
-            raise ValidationError(m) from e
+            raise ValueError(m, a, v) from e
 

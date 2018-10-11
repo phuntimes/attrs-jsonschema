@@ -4,7 +4,7 @@
 from setuptools import setup, find_packages
 
 
-project_packages = find_packages(
+packages = find_packages(
     exclude=['tests']
 )
 
@@ -26,7 +26,7 @@ setup_requirements = [
 ]
 
 
-extra_requirements = {}
+# extra_requirements = {}
 
 
 classifiers = [
@@ -42,17 +42,17 @@ classifiers = [
 
 setup(
     name='attrschema',
-    version='0.1.1',
-    packages=project_packages,
+    version='0.1.2',
+    packages=packages,
     url='https://github.com/phuntimes/attrschema',
     license='MIT License',
     author='Sean McVeigh',
     author_email='spmcveigh@gmail.com',
     description='Attribute validator for JSON data',
+    classifiers=classifiers,
     install_requires=install_requirements,
     setup_requires=setup_requirements,
-    extras_require=extra_requirements,
+    # extras_require=extra_requirements,
     # include_package_data=True,
     # package_data=package_data,
-    classifiers=classifiers,
 )

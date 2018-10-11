@@ -93,8 +93,8 @@
         "type": { "enum": ["MultiPoint"] },
         "coordinates": {
           "type": "array",
-          "items": { "$ref": "#/definitions/Position" },
-          "minItems": 1
+          "minItems": 1,
+          "items": { "$ref": "#/definitions/Position" }
         }
       }
     },
@@ -108,8 +108,8 @@
         "type": { "enum": ["LineString"] },
         "coordinates": {
           "type": "array",
-          "items": { "$ref": "#/definitions/Position" },
-          "minItems": 2
+          "minItems": 2,
+          "items": { "$ref": "#/definitions/Position" }
         }
       }
     },
@@ -123,8 +123,8 @@
         "type": { "enum": ["MultiLineString"] },
         "coordinates": {
           "type": "array",
-          "items": { "$ref": "#/definitions/LineString/properties/coordinates" },
-          "minItems": 1
+          "minItems": 1,
+          "items": { "$ref": "#/definitions/LineString/properties/coordinates" }
         }
       }
     },
@@ -138,8 +138,8 @@
         "type": { "enum": ["LinearRing"] },
         "coordinates": {
           "type": "array",
-          "items": { "$ref": "#/definitions/Position" },
-          "maxItems": 4
+          "maxItems": 4,
+          "items": { "$ref": "#/definitions/Position" }
         }
       }
     },
@@ -153,8 +153,8 @@
         "type": { "enum": ["Polygon"] },
         "coordinates": {
           "type": "array",
-          "items": { "$ref": "#/definitions/LinearRing/properties/coordinates" },
-          "minItems": 1
+          "minItems": 1,
+          "items": { "$ref": "#/definitions/LinearRing/properties/coordinates" }
         }
       }
     },
@@ -168,8 +168,8 @@
         "type": { "enum": [ "MultiPolygon" ] },
         "coordinates": {
           "type": "array",
-          "items": { "$ref": "#/definitions/Polygon/properties/coordinates" },
-          "minItems": 1
+          "minItems": 1,
+          "items": { "$ref": "#/definitions/Polygon/properties/coordinates" }
         }
       }
     },
@@ -191,13 +191,15 @@
       "description": "a GeometryCollection is an array (possibly empty) of any GeoJSON geometry",
       "link": "https://tools.ietf.org/html/rfc7946#section-3.1.8",
       "type": "object",
-      "additionalProperties": { "$ref": "#/definitions/bbox" },
+      "required": ["type", "geometries"],
+      "additionalProperties": false,
       "properties": {
         "type": { "enum": [ "GeometryCollection" ] },
+        "bbox": { "$ref": "#/definitions/bbox" },
         "geometries": {
           "type": "array",
-          "items": { "$ref": "#/definitions/Geometry" },
-          "minItems": 0
+          "minItems": 0,
+          "items": { "$ref": "#/definitions/Geometry" }
         }
       }
     },
@@ -206,10 +208,17 @@
       "description": "a Feature wraps a (possibly null) Geometry with (possibly null) metadata",
       "link": "https://tools.ietf.org/html/rfc7946#section-3.2",
       "type": "object",
-      "additionalProperties": { "$ref": "#/definitions/bbox" },
+      "required": ["type", "geometry"],
+      "additionalProperties": true,
       "properties": {
         "type": { "enum": [ "Feature" ] },
-        "properties": {},
+        "bbox": { "$ref": "#/definitions/bbox" },
+        "properties": {
+          "oneOf": [
+            {"type": "null"},
+            {"type": "object"}
+          ]
+        },
         "geometry": {
           "oneOf": [
             { "type": "null" },
@@ -223,9 +232,11 @@
       "description": "a FeatureCollection is an array of zero or more Features",
       "link": "https://tools.ietf.org/html/rfc7946#section-3.3",
       "type": "object",
-      "additionalProperties": { "$ref": "#/definitions/bbox" },
+      "required": ["type", "features"],
+      "additionalProperties": true,
       "properties": {
         "type": { "enum": [ "FeatureCollection" ] },
+        "bbox": { "$ref": "#/definitions/bbox" },
         "features": {
           "type": "array",
           "items": { "$ref": "#/definitions/Feature" } ,

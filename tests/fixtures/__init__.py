@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from typing import MutableMapping, MutableSequence, Any
+import typing
 
-JSONObject = MutableMapping[str, Any]
-JSONArray = MutableSequence[JSONObject]
+
+Schema = typing.Mapping[str, typing.Any]
