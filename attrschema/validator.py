@@ -9,7 +9,7 @@ from typing import Any, Union, Type, Pattern
 from jsonschema import Draft4Validator, Draft3Validator
 from jsonschema import ValidationError, SchemaError
 
-from .basic import Validator, Schema
+from .validate import Validator, Schema
 
 
 Draft = Union[Draft4Validator, Draft3Validator]
